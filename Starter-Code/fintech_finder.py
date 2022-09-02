@@ -14,22 +14,22 @@
 # estimate, that pays a Fintech Finder candidate for their work.
 
 # * Digitally sign a transaction that pays a Fintech Finder candidate, and send
-# this transaction to the Kovan testnet.
+# this transaction to the Ganache blockchain.
 
 # * Review the transaction hash code associated with the validated blockchain transaction.
 
-# Once you receive the transaction’s hash code, you will navigate to [Kovan’s
-# Etherscan](https://kovan.etherscan.io/) website to review the blockchain
-# transaction details. To confirm that you have successfully created the
-# transaction, you will save screenshots to the README.md file of your GitHub
-# repository for this Challenge assignment.
+# Once you receive the transaction’s hash code, you will navigate to the Transactions
+# section of Ganache to review the blockchain transaction details. To confirm that 
+# you have successfully created the transaction, you will save screenshots to the 
+# README.md file of your GitHub repository for this Challenge assignment.
 
 ################################################################################
 # Imports
 import streamlit as st
 from dataclasses import dataclass
 from typing import Any, List
-
+from web3 import Web3
+w3 = Web3(Web3.HTTPProvider('HTTP://127.0.0.1:7545'))
 ################################################################################
 # Step 1:
 # Import Ethereum Transaction Functions into the Fintech Finder Application
@@ -50,8 +50,7 @@ from typing import Any, List
 # incorporated into Python functions that allow you to automate the process of
 # accessing them.
 
-# 2. Add your mnemonic seed phrase and your Infura project id (both of which
-# you created earlier in the module) to the starter code’s `SAMPLE.env` file.
+# 2. Add your mnemonic seed phrase (provided by Ganache) to the starter code’s `SAMPLE.env` file.
 # When the information has been added, rename the file `.env`.
 
 # 3. Import the following functions from the `crypto_wallet.py` file:
@@ -69,6 +68,7 @@ from typing import Any, List
 # customer’s account. Inside this function, call the `get_balance` function
 # and pass it your Ethereum `account.address`.
 
+
 ################################################################################
 # Step 1 - Part 3:
 # Import the following functions from the `crypto_wallet.py` file:
@@ -76,18 +76,10 @@ from typing import Any, List
 # * `get_balance`
 # * `send_transaction`
 
-
-
 # @TODO:
 # From `crypto_wallet.py import the functions generate_account, get_balance,
 #  and send_transaction
-
-
 from crypto_wallet import generate_account, get_balance, send_transaction
-
-
-
-
 
 ################################################################################
 # Fintech Finder Candidate Information
@@ -138,7 +130,6 @@ st.sidebar.markdown("## Client Account Address and Ethernet Balance in Ether")
 
 # @TODO:
 #  Call the `generate_account` function and save it as the variable `account`
-
 account = generate_account()
 
 ##########################################
@@ -155,11 +146,10 @@ st.sidebar.write(account.address)
 # @TODO
 # Call `get_balance` function and pass it your account address
 # Write the returned ether balance to the sidebar
-
-ether_balance = get_balance(account.address)
-st.sidebar.write(ether_balance)
+# YOUR CODE HERE
 
 ##########################################
+ether = get_balance(w3, account.address)
 
 # Create a select box to chose a FinTech Hire candidate
 person = st.sidebar.selectbox('Select a Person', people)
@@ -248,13 +238,12 @@ st.sidebar.markdown("## Total Wage in Ether")
 # Calculate total `wage` for the candidate by multiplying the candidate’s hourly
 # rate from the candidate database (`candidate_database[person][3]`) by the
 # value of the `hours` variable
-
-wage=(candidate_database[person][3]) * hours
+person_fee = hours * hourly_rate
 
 # @TODO
 # Write the `wage` calculation to the Streamlit sidebar
-
-st.sidebar.write(wage)
+st.sidebar.markdown("### Fee Estimate")
+st.sidebar.write(person_fee)
 
 ##########################################
 # Step 2 - Part 2:
@@ -281,8 +270,7 @@ if st.sidebar.button("Send Transaction"):
     # Call the `send_transaction` function and pass it 3 parameters:
     # Your `account`, the `candidate_address`, and the `wage` as parameters
     # Save the returned transaction hash as a variable named `transaction_hash`
-    
-    transaction_hash = send_transaction(account, candidate_address, wage)
+    transaction_hash = send_transaction(w3, account, candidate_address, person_fee)
 
     # Markdown for the transaction hash
     st.sidebar.markdown("#### Validated Transaction Hash")
@@ -298,11 +286,10 @@ if st.sidebar.button("Send Transaction"):
 get_people()
 
 ################################################################################
-# Step 3: Inspect the Transaction on Etherscan
+# Step 3: Inspect the Transaction
 
 # Send a test transaction by using the application’s web interface, and then
-# look up the resulting transaction hash on the Kovan Etherscan block explorer
-# to verify the transactions.
+# look up the resulting transaction hash in Ganache.
 
 # Complete the following steps:
 
@@ -320,24 +307,16 @@ get_people()
 
 # 4 Click the Send Transaction button to sign and send the transaction with
 # your Ethereum account information. If the transaction is successfully
-# communicated to the Ethereum Kovan testnet, validated, and added to a block,
+# communicated to Ganache, validated, and added to a block,
 # a resulting transaction hash code will be written to the Streamlit
 # application sidebar.
-
-# 5. Copy the customer’s (your) Ethereum address from the Streamlit application
-# page, and navigate to [Kovan Etherscan](https://kovan.etherscan.io/).
-# Paste your copied Ethereum address into the Kovan Etherscan search bar.
-    # * Take a screenshot of your address balance and history on Etherscan.
+    
+# 5. Navigate to the Ganache accounts tab and locate your account (index 0).
+    # * Take a screenshot of the address, balance, and transaction (TX) count.
     # Save this screenshot to the README.md file of your GitHub repository for
     #  this Challenge assignment.
-
-# 6. On the Kovan Etherscan page, click on the Txn Hash number associated with
-# the transaction that paid the Fintech Finder candidate.
-    # * Take a screenshot of the transaction details on Etherscan. Save this
-    # screenshot to the README.md file of your GitHub repository for this
-    # Challenge assignment.
-
-# 7. Return to the original transaction, and click the transaction’s To address.
-    # * Take a screenshot of the recipient’s address balance and history on
-    # Etherscan. Save this screenshot to the README.md file of your GitHub
-    # repository for this Challenge assignment.
+    
+# 6. Navigate to the Ganache transactions tab and locate the transaction.
+    # * Click the transaction and take a screenshot of it.
+    # Save this screenshot to the README.md file of your GitHub repository for
+    #  this Challenge assignment.
