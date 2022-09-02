@@ -46,3 +46,5 @@ Specifically, you will assume the perspective of a Fintech Finder customer in or
 #### Step 3: Inspect the Transaction
 
 ![6](https://user-images.githubusercontent.com/85688247/188124470-e922f2be-bbf1-4a33-b3e0-3071960ad3c5.png)
+
+![7](https://user-images.githubusercontent.com/85688247/188127420-4110ca31-bf61-4f56-b335-19871c1743d6.png)
